@@ -152,6 +152,7 @@ touchscreen:
   - platform: gt911
     id: tft_touch
     display: tft_display
+    update_interval: 20ms
 
 
 # -----------------------------------------------------------------------------
