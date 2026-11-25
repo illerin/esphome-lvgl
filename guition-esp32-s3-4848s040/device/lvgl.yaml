@@ -23,7 +23,7 @@ lvgl:
       - label:
           text: "--:--"
           id: display_time
-          styles: roboto15_style
+          text_font: roboto17_font
           align: top_mid
           x: 0
           y: 4
