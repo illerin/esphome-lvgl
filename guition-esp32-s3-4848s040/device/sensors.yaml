@@ -272,6 +272,559 @@ text_sensor:
             format: "H %s°  L %s°"
             args: [ 'id(weather_hi).state.c_str()', 'x.c_str()' ]
 
+  # ---- forecast day 1  ("Day|Condition|High|Low|Rain")
+  - platform: homeassistant
+    entity_id: ${weather_entity}
+    attribute: d1
+    id: weather_wk_1
+    internal: true
+    on_value:
+      - lvgl.label.update:
+          id: wk_day_1
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(0);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_cond_1
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(1);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_temp_1
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(2) + "°/" + f(3) + "°";
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_rain_1
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(4);
+            return out.c_str();
+      - if:
+          condition:
+            lambda: 'return x.empty();'
+          then:
+            - lvgl.widget.hide: wk_row_1
+          else:
+            - lvgl.widget.show: wk_row_1
+
+  # ---- forecast day 2  ("Day|Condition|High|Low|Rain")
+  - platform: homeassistant
+    entity_id: ${weather_entity}
+    attribute: d2
+    id: weather_wk_2
+    internal: true
+    on_value:
+      - lvgl.label.update:
+          id: wk_day_2
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(0);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_cond_2
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(1);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_temp_2
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(2) + "°/" + f(3) + "°";
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_rain_2
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(4);
+            return out.c_str();
+      - if:
+          condition:
+            lambda: 'return x.empty();'
+          then:
+            - lvgl.widget.hide: wk_row_2
+          else:
+            - lvgl.widget.show: wk_row_2
+
+  # ---- forecast day 3  ("Day|Condition|High|Low|Rain")
+  - platform: homeassistant
+    entity_id: ${weather_entity}
+    attribute: d3
+    id: weather_wk_3
+    internal: true
+    on_value:
+      - lvgl.label.update:
+          id: wk_day_3
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(0);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_cond_3
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(1);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_temp_3
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(2) + "°/" + f(3) + "°";
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_rain_3
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(4);
+            return out.c_str();
+      - if:
+          condition:
+            lambda: 'return x.empty();'
+          then:
+            - lvgl.widget.hide: wk_row_3
+          else:
+            - lvgl.widget.show: wk_row_3
+
+  # ---- forecast day 4  ("Day|Condition|High|Low|Rain")
+  - platform: homeassistant
+    entity_id: ${weather_entity}
+    attribute: d4
+    id: weather_wk_4
+    internal: true
+    on_value:
+      - lvgl.label.update:
+          id: wk_day_4
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(0);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_cond_4
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(1);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_temp_4
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(2) + "°/" + f(3) + "°";
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_rain_4
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(4);
+            return out.c_str();
+      - if:
+          condition:
+            lambda: 'return x.empty();'
+          then:
+            - lvgl.widget.hide: wk_row_4
+          else:
+            - lvgl.widget.show: wk_row_4
+
+  # ---- forecast day 5  ("Day|Condition|High|Low|Rain")
+  - platform: homeassistant
+    entity_id: ${weather_entity}
+    attribute: d5
+    id: weather_wk_5
+    internal: true
+    on_value:
+      - lvgl.label.update:
+          id: wk_day_5
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(0);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_cond_5
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(1);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_temp_5
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(2) + "°/" + f(3) + "°";
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_rain_5
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(4);
+            return out.c_str();
+      - if:
+          condition:
+            lambda: 'return x.empty();'
+          then:
+            - lvgl.widget.hide: wk_row_5
+          else:
+            - lvgl.widget.show: wk_row_5
+
+  # ---- forecast day 6  ("Day|Condition|High|Low|Rain")
+  - platform: homeassistant
+    entity_id: ${weather_entity}
+    attribute: d6
+    id: weather_wk_6
+    internal: true
+    on_value:
+      - lvgl.label.update:
+          id: wk_day_6
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(0);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_cond_6
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(1);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_temp_6
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(2) + "°/" + f(3) + "°";
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_rain_6
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(4);
+            return out.c_str();
+      - if:
+          condition:
+            lambda: 'return x.empty();'
+          then:
+            - lvgl.widget.hide: wk_row_6
+          else:
+            - lvgl.widget.show: wk_row_6
+
+  # ---- forecast day 7  ("Day|Condition|High|Low|Rain")
+  - platform: homeassistant
+    entity_id: ${weather_entity}
+    attribute: d7
+    id: weather_wk_7
+    internal: true
+    on_value:
+      - lvgl.label.update:
+          id: wk_day_7
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(0);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_cond_7
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(1);
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_temp_7
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(2) + "°/" + f(3) + "°";
+            return out.c_str();
+      - lvgl.label.update:
+          id: wk_rain_7
+          text: !lambda |-
+            auto f = [&](int idx) -> std::string {
+              size_t start = 0;
+              for (int i = 0; i < idx; i++) {
+                size_t p = x.find('|', start);
+                if (p == std::string::npos) return "";
+                start = p + 1;
+              }
+              size_t end = x.find('|', start);
+              return x.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            };
+            static std::string out;
+            out = f(4);
+            return out.c_str();
+      - if:
+          condition:
+            lambda: 'return x.empty();'
+          then:
+            - lvgl.widget.hide: wk_row_7
+          else:
+            - lvgl.widget.show: wk_row_7
+
   # ---- row 1: title (empty title hides the row)
   - platform: homeassistant
     entity_id: ${todo_entity}
