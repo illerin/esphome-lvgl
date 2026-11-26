@@ -14,6 +14,7 @@ substitutions:
   todo_entity: sensor.family_todo
   weather_entity: sensor.display_weather
   todo_complete_script: script.vikunja_complete_task
+  todo_add_script: script.vikunja_add_task
 
 lvgl:
   buffer_size: 100%
@@ -49,6 +50,8 @@ lvgl:
             radius: 12
             pad_all: 0
             scrollable: false
+            on_click:
+              - lvgl.widget.show: weather_full
             widgets:
               - label:
                   id: weather_temp
@@ -125,8 +128,10 @@ lvgl:
               text_color: 0x000000
             widgets:
               - label:
-                  text: "${light1_name}"
+                  text: "${light1_name}
+Lights"
                   text_font: roboto19_font
+                  text_align: center
                   align: center
             on_press:
               - homeassistant.action:
@@ -151,8 +156,10 @@ lvgl:
               text_color: 0x000000
             widgets:
               - label:
-                  text: "${light2_name}"
+                  text: "${light2_name}
+Lights"
                   text_font: roboto19_font
+                  text_align: center
                   align: center
             on_press:
               - homeassistant.action:
@@ -181,6 +188,27 @@ lvgl:
                   align: top_left
                   x: 12
                   y: 8
+              - button:
+                  id: todo_add_btn
+                  x: 184
+                  y: 4
+                  width: 40
+                  height: 32
+                  radius: 8
+                  bg_color: 0x2E7D32
+                  border_width: 0
+                  shadow_width: 0
+                  widgets:
+                    - label:
+                        text: "+"
+                        text_font: montserrat_20
+                        text_color: 0xFFFFFF
+                        align: center
+                  on_click:
+                    - lvgl.textarea.update:
+                        id: todo_input
+                        text: ""
+                    - lvgl.widget.show: todo_add_full
               - obj:
                   id: todo_row_1
                   x: 0
@@ -605,3 +633,521 @@ lvgl:
                         text: ""
                         text_font: roboto17_font
                         text_color: 0xFFFFFF
+
+        # ---------------- WEATHER FULL-SCREEN VIEW ----------------
+        - obj:
+            id: weather_full
+            x: 0
+            y: 0
+            width: 480
+            height: 480
+            bg_color: 0x000000
+            bg_opa: COVER
+            border_width: 0
+            radius: 0
+            pad_all: 0
+            scrollable: false
+            hidden: true
+            on_click:
+              - lvgl.widget.hide: weather_full
+            widgets:
+              - label:
+                  text: "Forecast"
+                  text_font: roboto19_font
+                  text_color: 0xFFFFFF
+                  align: top_left
+                  x: 12
+                  y: 34
+              - label:
+                  text: "tap anywhere to close"
+                  text_font: roboto17_font
+                  text_color: 0x808080
+                  align: bottom_mid
+                  y: -8
+              - obj:
+                  id: wk_row_1
+                  x: 8
+                  y: 66
+                  width: 464
+                  height: 48
+                  bg_color: 0x1C1C1C
+                  bg_opa: COVER
+                  border_width: 0
+                  radius: 8
+                  pad_all: 0
+                  scrollable: false
+                  clickable: false
+                  hidden: true
+                  widgets:
+                    - label:
+                        id: wk_day_1
+                        x: 12
+                        y: 12
+                        width: 70
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_cond_1
+                        x: 90
+                        y: 12
+                        width: 165
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+                    - label:
+                        id: wk_temp_1
+                        x: 262
+                        y: 12
+                        width: 110
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_rain_1
+                        x: 376
+                        y: 12
+                        width: 82
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+              - obj:
+                  id: wk_row_2
+                  x: 8
+                  y: 120
+                  width: 464
+                  height: 48
+                  bg_color: 0x1C1C1C
+                  bg_opa: COVER
+                  border_width: 0
+                  radius: 8
+                  pad_all: 0
+                  scrollable: false
+                  clickable: false
+                  hidden: true
+                  widgets:
+                    - label:
+                        id: wk_day_2
+                        x: 12
+                        y: 12
+                        width: 70
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_cond_2
+                        x: 90
+                        y: 12
+                        width: 165
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+                    - label:
+                        id: wk_temp_2
+                        x: 262
+                        y: 12
+                        width: 110
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_rain_2
+                        x: 376
+                        y: 12
+                        width: 82
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+              - obj:
+                  id: wk_row_3
+                  x: 8
+                  y: 174
+                  width: 464
+                  height: 48
+                  bg_color: 0x1C1C1C
+                  bg_opa: COVER
+                  border_width: 0
+                  radius: 8
+                  pad_all: 0
+                  scrollable: false
+                  clickable: false
+                  hidden: true
+                  widgets:
+                    - label:
+                        id: wk_day_3
+                        x: 12
+                        y: 12
+                        width: 70
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_cond_3
+                        x: 90
+                        y: 12
+                        width: 165
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+                    - label:
+                        id: wk_temp_3
+                        x: 262
+                        y: 12
+                        width: 110
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_rain_3
+                        x: 376
+                        y: 12
+                        width: 82
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+              - obj:
+                  id: wk_row_4
+                  x: 8
+                  y: 228
+                  width: 464
+                  height: 48
+                  bg_color: 0x1C1C1C
+                  bg_opa: COVER
+                  border_width: 0
+                  radius: 8
+                  pad_all: 0
+                  scrollable: false
+                  clickable: false
+                  hidden: true
+                  widgets:
+                    - label:
+                        id: wk_day_4
+                        x: 12
+                        y: 12
+                        width: 70
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_cond_4
+                        x: 90
+                        y: 12
+                        width: 165
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+                    - label:
+                        id: wk_temp_4
+                        x: 262
+                        y: 12
+                        width: 110
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_rain_4
+                        x: 376
+                        y: 12
+                        width: 82
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+              - obj:
+                  id: wk_row_5
+                  x: 8
+                  y: 282
+                  width: 464
+                  height: 48
+                  bg_color: 0x1C1C1C
+                  bg_opa: COVER
+                  border_width: 0
+                  radius: 8
+                  pad_all: 0
+                  scrollable: false
+                  clickable: false
+                  hidden: true
+                  widgets:
+                    - label:
+                        id: wk_day_5
+                        x: 12
+                        y: 12
+                        width: 70
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_cond_5
+                        x: 90
+                        y: 12
+                        width: 165
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+                    - label:
+                        id: wk_temp_5
+                        x: 262
+                        y: 12
+                        width: 110
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_rain_5
+                        x: 376
+                        y: 12
+                        width: 82
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+              - obj:
+                  id: wk_row_6
+                  x: 8
+                  y: 336
+                  width: 464
+                  height: 48
+                  bg_color: 0x1C1C1C
+                  bg_opa: COVER
+                  border_width: 0
+                  radius: 8
+                  pad_all: 0
+                  scrollable: false
+                  clickable: false
+                  hidden: true
+                  widgets:
+                    - label:
+                        id: wk_day_6
+                        x: 12
+                        y: 12
+                        width: 70
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_cond_6
+                        x: 90
+                        y: 12
+                        width: 165
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+                    - label:
+                        id: wk_temp_6
+                        x: 262
+                        y: 12
+                        width: 110
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_rain_6
+                        x: 376
+                        y: 12
+                        width: 82
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+              - obj:
+                  id: wk_row_7
+                  x: 8
+                  y: 390
+                  width: 464
+                  height: 48
+                  bg_color: 0x1C1C1C
+                  bg_opa: COVER
+                  border_width: 0
+                  radius: 8
+                  pad_all: 0
+                  scrollable: false
+                  clickable: false
+                  hidden: true
+                  widgets:
+                    - label:
+                        id: wk_day_7
+                        x: 12
+                        y: 12
+                        width: 70
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_cond_7
+                        x: 90
+                        y: 12
+                        width: 165
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+                    - label:
+                        id: wk_temp_7
+                        x: 262
+                        y: 12
+                        width: 110
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: wk_rain_7
+                        x: 376
+                        y: 12
+                        width: 82
+                        text: ""
+                        text_font: roboto19_font
+                        text_color: 0x8EC5FF
+
+        # ---------------- ADD-TASK VIEW (keyboard) ----------------
+        - obj:
+            id: todo_add_full
+            x: 0
+            y: 0
+            width: 480
+            height: 480
+            bg_color: 0x000000
+            bg_opa: COVER
+            border_width: 0
+            radius: 0
+            pad_all: 0
+            scrollable: false
+            hidden: true
+            widgets:
+              - label:
+                  text: "New task"
+                  text_font: roboto19_font
+                  text_color: 0xFFFFFF
+                  align: top_left
+                  x: 12
+                  y: 40
+              - button:
+                  id: todo_add_cancel
+                  x: 360
+                  y: 32
+                  width: 112
+                  height: 44
+                  radius: 8
+                  bg_color: 0x3A3A3A
+                  border_width: 0
+                  shadow_width: 0
+                  widgets:
+                    - label:
+                        text: "Cancel"
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                        align: center
+                  on_click:
+                    - lvgl.textarea.update:
+                        id: todo_input
+                        text: ""
+                    - lvgl.widget.hide: todo_add_full
+              - textarea:
+                  id: todo_input
+                  x: 8
+                  y: 84
+                  width: 464
+                  height: 56
+                  one_line: true
+                  max_length: 60
+                  placeholder_text: "What needs doing?"
+                  text_font: montserrat_20
+                  text_color: 0xFFFFFF
+                  bg_color: 0x1C1C1C
+                  border_color: 0x555555
+                  border_width: 2
+              - button:
+                  id: todo_add_p0
+                  x: 8
+                  y: 148
+                  width: 150
+                  height: 52
+                  radius: 8
+                  bg_color: 0x3A3A3A
+                  border_width: 0
+                  shadow_width: 0
+                  widgets:
+                    - label:
+                        text: "Normal"
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                        align: center
+                  on_click:
+                    - if:
+                        condition:
+                          lambda: 'return strlen(lv_textarea_get_text(id(todo_input))) > 0;'
+                        then:
+                          - homeassistant.action:
+                              action: ${todo_add_script}
+                              data:
+                                title: !lambda 'return std::string(lv_textarea_get_text(id(todo_input)));'
+                                priority: "0"
+                          - lvgl.textarea.update:
+                              id: todo_input
+                              text: ""
+                          - lvgl.widget.hide: todo_add_full
+              - button:
+                  id: todo_add_p2
+                  x: 165
+                  y: 148
+                  width: 150
+                  height: 52
+                  radius: 8
+                  bg_color: 0x9A7B00
+                  border_width: 0
+                  shadow_width: 0
+                  widgets:
+                    - label:
+                        text: "Medium"
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                        align: center
+                  on_click:
+                    - if:
+                        condition:
+                          lambda: 'return strlen(lv_textarea_get_text(id(todo_input))) > 0;'
+                        then:
+                          - homeassistant.action:
+                              action: ${todo_add_script}
+                              data:
+                                title: !lambda 'return std::string(lv_textarea_get_text(id(todo_input)));'
+                                priority: "2"
+                          - lvgl.textarea.update:
+                              id: todo_input
+                              text: ""
+                          - lvgl.widget.hide: todo_add_full
+              - button:
+                  id: todo_add_p4
+                  x: 322
+                  y: 148
+                  width: 150
+                  height: 52
+                  radius: 8
+                  bg_color: 0xB3261E
+                  border_width: 0
+                  shadow_width: 0
+                  widgets:
+                    - label:
+                        text: "High"
+                        text_font: roboto19_font
+                        text_color: 0xFFFFFF
+                        align: center
+                  on_click:
+                    - if:
+                        condition:
+                          lambda: 'return strlen(lv_textarea_get_text(id(todo_input))) > 0;'
+                        then:
+                          - homeassistant.action:
+                              action: ${todo_add_script}
+                              data:
+                                title: !lambda 'return std::string(lv_textarea_get_text(id(todo_input)));'
+                                priority: "4"
+                          - lvgl.textarea.update:
+                              id: todo_input
+                              text: ""
+                          - lvgl.widget.hide: todo_add_full
+              - keyboard:
+                  id: todo_keyboard
+                  x: 0
+                  y: 208
+                  width: 480
+                  height: 272
+                  mode: TEXT_LOWER
+                  textarea: todo_input
+                  items:
+                    text_font: montserrat_20
