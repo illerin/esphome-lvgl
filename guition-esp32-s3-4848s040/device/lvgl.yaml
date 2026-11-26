@@ -128,11 +128,15 @@ lvgl:
               text_color: 0x000000
             widgets:
               - label:
-                  text: "${light1_name}
-Lights"
+                  text: "${light1_name}"
                   text_font: roboto19_font
-                  text_align: center
                   align: center
+                  y: -14
+              - label:
+                  text: "Lights"
+                  text_font: roboto17_font
+                  align: center
+                  y: 14
             on_press:
               - homeassistant.action:
                   action: homeassistant.toggle
@@ -156,11 +160,15 @@ Lights"
               text_color: 0x000000
             widgets:
               - label:
-                  text: "${light2_name}
-Lights"
+                  text: "${light2_name}"
                   text_font: roboto19_font
-                  text_align: center
                   align: center
+                  y: -14
+              - label:
+                  text: "Lights"
+                  text_font: roboto17_font
+                  align: center
+                  y: 14
             on_press:
               - homeassistant.action:
                   action: homeassistant.toggle
@@ -1143,6 +1151,7 @@ Lights"
                           - lvgl.widget.hide: todo_add_full
               - keyboard:
                   id: todo_keyboard
+                  align: top_left
                   x: 0
                   y: 208
                   width: 480
